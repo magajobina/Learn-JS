@@ -4,4 +4,4 @@ let decriment = 20,
 console.log(decriment++, incriment--);
 console.log(decriment, incriment);
 
-console.log(10%7);
+console.log(10%9);
