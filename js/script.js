@@ -1,103 +1,31 @@
-/* Задание на урок:
-
-1) У нас уже есть рабочее приложение, состоящее из отдельных функций. Представьте, что
-перед вами стоит задача переписать его так, чтобы все функции стали методами объекта personalMovieDB
-Такое случается в реальных продуктах при смене технологий или подхода к архитектуре программы
-
-2) Создать метод toggleVisibleMyDB, который при вызове будет проверять свойство privat. Если оно false - он
-переключает его в true, если true - переключает в false. Протестировать вместе с showMyDB.
-
-3) В методе writeYourGenres запретить пользователю нажать кнопку "отмена" или оставлять пустую строку. 
-Если он это сделал - возвращать его к этому же вопросу. После того, как все жанры введены - 
-при помощи метода forEach вывести в консоль сообщения в таком виде:
-"Любимый жанр #(номер по порядку, начиная с 1) - это (название из массива)"*/
-
 'use strict';
 
+const circles = document.querySelectorAll('.circle'),  //создаём переменную circles и присваиваем ей все элементы с классом circle
+      wrapper = document.querySelector('.wrapper'), //переменная с элементом с классом wrapper
+      hearts = wrapper.querySelectorAll('.heart'); //получаем все эл. с классом heart уже только ВНУТРИ wrapper
+circles.forEach((item) => {
+  item.style.backgroundColor = 'green';  //перекрашиваем каждый элемент в массиве circles в зеленый
+});
 
-// start();
+let someElement = document.createElement('div'); //присваиваем переменной someElement создаваемый элемент с тегом div
+someElement.classList.add('black'); //добавляем someElement-ту класс black
 
-const personalMovieDB = {
-  count: 0,
-  movies: {},
-  actors: {},
-  genres: [],
-  private: false,
-  start: function() {
-    personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
-  
-    while (personalMovieDB.count == null || personalMovieDB.count == '' || isNaN(personalMovieDB.count)) {
-      personalMovieDB.count = +prompt('Сколько фильмов вы уже посмотрели?', '');
-    }
-  },
-  rememberMyFilms: function() {
-    for (let i = 0; i < 2; i++) {
-      const a = prompt('Один из последних просмотренных фильмов?', ''),
-            b = prompt('На сколько оцените его?', '');
-      if (a != '' && b != '' && a != null && b != null && a.length < 50) {
-        personalMovieDB.movies[a] = b;
-        console.log('done');
-      } else {
-        i--;
-        console.log('error');
-      }
-    }
-  },
-  detectPersonalLevel: function() {
-    if (personalMovieDB.count <= 10) {
-      console.log('просмотрено довольно мало фильмов <10');
-    } else if (personalMovieDB.count > 10 && personalMovieDB.count <= 30) {
-      console.log('вы классический зритель от 10 до 30');
-    } else if (personalMovieDB.count > 30) {
-      console.log('вы тру киноман >30');
-    } else {
-      console.log('произошла ошибка');
-    }
-  },
-  writeYourGenres: function() {
-    let genresss;
-    for (let i = 0; i < 1; i++) {
-      genresss = prompt(`Введите ваши любимые жанры через запятую`, '');
-      if (genresss == null || genresss === '') {
-        i--; 
-      } else {
-        personalMovieDB.genres = genresss.split(', ');  // пихает куски строки в массив. Когда какой кусок пихать определяет по разделителю указанному в скобках (', ')
-        personalMovieDB.genres.sort(); // сортирует по алфавиту, но прежде всего хуярит только все загланые, потом уже lowercase.
-      }
-    }
-    personalMovieDB.genres.forEach((element, index)  => {
-      console.log(`Любимый жанр #${index+1} - это ${element}`);
-    });
-  
-  },
-  showMyDB: function(arg) {
-    if (!arg) {
-      console.log(personalMovieDB);
-    }
-  },
-  toggleVisibleMyDB: function() {
-    if (personalMovieDB.private === false) {
-      personalMovieDB.private = true;
-    } else {
-      personalMovieDB.private = false;
-    }
-  }
-};
+wrapper.append(someElement);  //добавялем элемент someElement внутрь элемента с классом wrapper. Добавляется в конец
+// wrapper.prepend(someElement); //то же самое, но добавляется в начало wrapper-а
 
-// personalMovieDB.toggleVisibleMyDB();
 
-personalMovieDB.writeYourGenres();
+hearts[0].before(someElement); //Выбираем ПЕРВЫЙ элемент из hearts, добавляем ПЕРЕД ним элемент (не внутрь него как раньше)
+// hearts[1].after(someElement); //аналогично предыдущему, но вставляет ПОСЛЕ элемента
 
-personalMovieDB.showMyDB(personalMovieDB.private);
+circles[0].remove(); // удаляет первый кружок
 
-// const arr = [1, 2, 3, 6, 8, 9];
+hearts[0].replaceWith(circles[0]); //заменяем первое сердечко на первый кружок, который мы кста удалили предыдущим действием
 
-// arr.pop();
-// arr.push(123);
-// console.log(arr);
+someElement.innerHTML = '<h1>Hello world</h1>'; //добавляем тег с текстом внутрь блока
+someElement.textContent = 'Hello world';
 
-// arr.forEach(function(itemItself, arrayIndex, array) {
-//   console.log(`Позиция элемента в массиве: ${arrayIndex}, 
-// значение элемента: ${itemItself}, и весь массив: ${array}`);
-
-// });
+// эти штуки ниже в принципе логичны если переводить их на русский
+someElement.insertAdjacentHTML("beforebegin", "<h2>beforebegin</h2>"); //вставляем HTML блок СНАРУЖИ ПЕРЕД элементом (не внутри а снаружи)
+someElement.insertAdjacentHTML("afterend", "<h2>afterend</h2>"); //вставляем HTML блок СНАРУЖИ ПОСЛЕ элемента (не внутри а снаружи)
+someElement.insertAdjacentHTML("afterbegin", "<h2>afterbegin</h2>"); //вставляем HTML блок ВНУТРЬ элемента в начало
+someElement.insertAdjacentHTML("beforeend", "<h2>beforeend</h2>"); //вставляем HTML блок ВНУТРЬ элемента, в конец
