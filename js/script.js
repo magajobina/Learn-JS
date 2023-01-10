@@ -1,31 +1,57 @@
+/* Задания на урок:
+
+1) Удалить все рекламные блоки со страницы (правая часть сайта)
+
+2) Изменить жанр фильма, поменять "комедия" на "драма"
+
+3) Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
+Реализовать только при помощи JS
+
+4) Список фильмов на странице сформировать на основании данных из этого JS файла.
+Отсортировать их по алфавиту 
+
+5) Добавить нумерацию выведенных фильмов */
+
 'use strict';
 
-const circles = document.querySelectorAll('.circle'),  //создаём переменную circles и присваиваем ей все элементы с классом circle
-      wrapper = document.querySelector('.wrapper'), //переменная с элементом с классом wrapper
-      hearts = wrapper.querySelectorAll('.heart'); //получаем все эл. с классом heart уже только ВНУТРИ wrapper
-circles.forEach((item) => {
-  item.style.backgroundColor = 'green';  //перекрашиваем каждый элемент в массиве circles в зеленый
+const movieDB = {
+    movies: [
+        "Логан",
+        "Лига справедливости",
+        "Ла-ла лэнд",
+        "Одержимость",
+        "Скотт Пилигрим против..."
+    ]
+};
+movieDB.movies.sort();
+
+const advBanners = document.querySelectorAll('.promo__adv img'),
+    genre = document.querySelector('.promo__genre'),
+    replaceBG = document.querySelector('.promo__bg'),
+    films = document.querySelectorAll('.promo__interactive-item'),
+    movieList = document.querySelector('.promo__interactive-list');
+
+    films.forEach(item => {
+        item.remove();
+    });
+
+    movieDB.movies.forEach((filmName, i) => {//Тут мы добавляем HTML структурЫ с калом в нужное место
+        movieList.innerHTML += `
+        <li class="promo__interactive-item">${i+1}. ${filmName}
+            <div class="delete"></div>
+        </li>
+    `;
+    });
+
+advBanners.forEach(item => {
+    item.remove();  //удаляем рекламу
 });
 
-let someElement = document.createElement('div'); //присваиваем переменной someElement создаваемый элемент с тегом div
-someElement.classList.add('black'); //добавляем someElement-ту класс black
+genre.textContent = 'ДРАМА'; //заменяем текст внутри элемента
 
-wrapper.append(someElement);  //добавялем элемент someElement внутрь элемента с классом wrapper. Добавляется в конец
-// wrapper.prepend(someElement); //то же самое, но добавляется в начало wrapper-а
+console.log(replaceBG);
+
+// replaceBG.style = 'background:url("../img/bg.jpg") center center/cover no-repeat; background-position: top;'; //это как я сделал
+replaceBG.style.backgroundImage = 'url("img/bg.jpg")'; //это как сделал преподаватель
 
 
-hearts[0].before(someElement); //Выбираем ПЕРВЫЙ элемент из hearts, добавляем ПЕРЕД ним элемент (не внутрь него как раньше)
-// hearts[1].after(someElement); //аналогично предыдущему, но вставляет ПОСЛЕ элемента
-
-circles[0].remove(); // удаляет первый кружок
-
-hearts[0].replaceWith(circles[0]); //заменяем первое сердечко на первый кружок, который мы кста удалили предыдущим действием
-
-someElement.innerHTML = '<h1>Hello world</h1>'; //добавляем тег с текстом внутрь блока
-someElement.textContent = 'Hello world';
-
-// эти штуки ниже в принципе логичны если переводить их на русский
-someElement.insertAdjacentHTML("beforebegin", "<h2>beforebegin</h2>"); //вставляем HTML блок СНАРУЖИ ПЕРЕД элементом (не внутри а снаружи)
-someElement.insertAdjacentHTML("afterend", "<h2>afterend</h2>"); //вставляем HTML блок СНАРУЖИ ПОСЛЕ элемента (не внутри а снаружи)
-someElement.insertAdjacentHTML("afterbegin", "<h2>afterbegin</h2>"); //вставляем HTML блок ВНУТРЬ элемента в начало
-someElement.insertAdjacentHTML("beforeend", "<h2>beforeend</h2>"); //вставляем HTML блок ВНУТРЬ элемента, в конец
