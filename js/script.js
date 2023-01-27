@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function hideTabContent() {
     tabsContent.forEach(item => { //выбираем все табы
-      item.style.display = 'none'; //скрываем все табы
+      item.classList.add('hide'); //скрываем все табы
+      item.classList.remove('show'); //скрываем все табы
     });
 
     tabs.forEach(item => { //выбираем все кнопки переключения табов
@@ -14,9 +15,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  function showTabContent(i = 0) {
-    tabsContent[i].style.display = 'block';
-    tabs[i].classList.add('tabheader__item_active');
+  function showTabContent(i = 0) { //тут i = 0 делает этому аргументу значение по умолчанию. Конечно если в аргумент что-то передаётся, то он уже не равен нулю
+    tabsContent[i].children[0].classList.add('fade'); //добавляем дочернему элементу под индексом 0 (тут это картинка) класс fade
+    tabsContent[i].classList.add('show'); //добавляем класс show нужному элементу
+    tabsContent[i].classList.remove('hide'); //удаляем класс hide
+    tabs[i].classList.add('tabheader__item_active'); //добавляем эл кнопки под нужным идексом класс активности
   }
   
   hideTabContent();
