@@ -40,17 +40,66 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+                                                                  // Модальное окно //
 
+const modalButton = document.querySelectorAll('[data-modal]'),
+      modalClose = document.querySelector('[data-close]'),
+      modalWindow = document.querySelector('.modal'),
+      body = document.querySelector('body');
 
+function closeModal () {
+  modalWindow.classList.add('hide');        //закрываем модалку
+  modalWindow.classList.remove('show');        
+  body.style.overflow = '';  //разрешаем прокрутку
+}
+function showModal () {
+  modalWindow.classList.add('show');        //и делаем ему display block
+  modalWindow.classList.remove('hide');        //убираем display none
+  body.style.overflow = 'hidden';  //запрещаем прокрутку
+  clearInterval(modalTimerId);
+}
 
+modalButton.forEach(item => { 
+  item.addEventListener('click', showModal); //вешаем ивент листенер на каждую кнопку с функционалом в функции showModal
+  
+});
 
+modalWindow.addEventListener('click', (event) => { //вешаем event listener На модальное окно
+  event.preventDefault();
+  console.log(event.target); //в консоль выводит то что мы непосредственно жмякнули для отслеживания и для отладки
+  if (event.target === modalWindow || event.target === modalClose) { // проверяем если нажали на оверлей (modalWindow) или если на крестик (modalClose), то...
+    closeModal();
+  }
+});
 
+document.addEventListener('keydown', (e) => { //вешаем event Listener на весь документ чтоб отследить нажатие клавиши
+  if (e.code === 'Escape' && modalWindow.classList.contains('show')) { //если клавиша Escape и модальное окно показывается то...
+    closeModal();
+    console.log(e);
+  }
+});
 
+const modalTimerId = setTimeout(showModal, 300000); //показывает модальное окно через некоторое время после попадания на страницу
+//(или скорее после прогрузки DOM дерева, не забываем что мы находимся внутри ивента DOMContentLoaded)
 
-  // console.log(tabs[0].classList);
+function showModalByScroll() {
+  if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) { //смещение странички от верха (тип уже проскроленное) + 
+    //высота пользовательского окна >= высоте всей странички
+    showModal();
+    window.removeEventListener('scroll', showModalByScroll);
+  }
+}
+window.addEventListener('scroll', showModalByScroll);
 
+function User(name, id) {
+  this.name = name;
+  this.id = id;
+  this.human = true;
+}
 
-
+let Ivan = new User('Ivan', 23);
+Ivan.baba = true;
+console.log(Ivan);
 
 
 
